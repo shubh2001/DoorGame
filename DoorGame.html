@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chore Door!</title>
+    <style>
+        body {
+  background-color: #010165;
+  margin: 0px;
+}
+.header {
+  background-color:#00ffff;
+  text-align: center;
+}
+.title-row {
+margin-top: 42px;
+margin-bottom: 21px;
+text-align: center;
+
+}
+.instructions-title {
+  display: inline;
+  font-size: 18px;
+  color: #00ffff;
+  font-family: 'Work Sans';
+}
+.instructions-row {
+  margin: 0 auto;
+  width: 400px;
+}
+.instructions-number {
+  padding-right: 25px;
+  font-family: 'Work Sans';
+  font-size: 36px;
+  color: #00ffff;
+}
+.instructions-text {
+  padding: 10px;
+  font-family: 'Work Sans';
+  font-size: 14px;
+  color: #ffffff;
+}
+.door-row{
+  text-align: center;
+}
+.door-frame {
+cursor:pointer;
+padding: 10px;
+
+}
+.start-row {
+  margin: auto;
+  width: 120px;
+  height: 43px;
+  font-family: Work-Sans;
+  background-color: #eb6536;
+  padding-top: 18px;
+  font-size: 18px;
+  text-align: center;
+  color: #010165;
+  margin-bottom: 21px;
+  cursor: pointer;
+}
+.score-row {
+  text-align: center;
+  width: 100%;
+}
+
+.score-text {
+  margin-right: 17px;
+  padding: 5px;
+  display: inline;
+  font-family: 'Work Sans';
+  font-size: 12px;
+  letter-spacing: 1.1px;
+  color: #ffffff;
+}
+
+.score-box {
+  margin-top: 9px;
+  display: inline-block;
+  padding: 8px;
+  margin: 18px;
+  margin-right: 29px;
+  width: 59px;
+  background-color: #00ffff;
+  font-family: 'Work Sans';
+  font-size: 45px;
+}
+
+
+     </style>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <div class='header'>
+      <img src='https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/logo.svg'>
+      </div>
+      <div class='title-row'>
+        <img src='https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/star.svg'>
+         <p class='instructions-title'> Instructions </p>
+        <img src='https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/star.svg'>
+        </div>
+  <table class='instructions-row'>
+          <tr> 
+            <td class='instructions-number'>1</td>
+            <td class='instructions-text'>Hiding behind one of these doors is the ChoreBot. </td>
+         </tr>
+          <tr> 
+            <td class='instructions-number'>2</td>
+            <td class='instructions-text'>Your mission is to open all of the doors without running into the ChoreBot. </td>
+          </tr>
+          <tr> 
+            <td class='instructions-number'>3</td>
+            <td class='instructions-text'>If you manage to avoid the ChoreBot until you open the very last door, you win! </td>
+          </tr>
+          <tr> 
+            <td class='instructions-number'>4</td>
+            <td class='instructions-text'>See if you can score a winning streak! </td>
+          </tr>
+          </table>
+    <div class="door-row">
+      <img id="door1" class="door-frame" src="https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg">
+      <img id="door2" class="door-frame"  src="https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg">
+      <img id="door3" class="door-frame"  src="https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg">
+      </div>
+      <div id='start' class='start-row'>Good Luck!</div>
+      <table class="score-row">
+        <tr>
+          <th class="score-text">Current streak:</th>
+          <th class="score-text">Best streak:</th>
+        </tr>
+        <tr>
+          <th class="score-box" id="score-number"></th>
+          <th class="score-box" id="high-score-number"></th>
+        <tr>
+      </table>
+      <script>
+          let doorImage1 = document.getElementById('door1');
+let botDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/robot.svg';
+let beachDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/beach.svg';
+let SpaceDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/space.svg'; 
+let closedDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg';
+
+let score = 0;
+let highScore = 0;
+let currentStreak = document.getElementById('score-number');
+let bestStreak = document.getElementById('high-score-number');
+currentStreak.innerHTML = score;
+bestStreak.innerHTML = highScore;
+let doorImage2= document.getElementById('door2');
+let doorImage3=document.getElementById('door3');
+var openDoor1;
+var openDoor2;
+var openDoor3;
+let numClosedDoors = 3;
+let currentPlaying = true;
+let startButton = document.getElementById('start');
+const randomChoreDoorGenerator = () => {
+  choreDoor = Math.floor(Math.random() * 6);
+  switch (choreDoor) {
+    case 0:
+      openDoor1 = botDoorPath;
+      openDoor2 = beachDoorPath;
+      openDoor3 = SpaceDoorPath;
+      break;
+    case 1:
+      openDoor1 = botDoorPath;
+      openDoor2 = SpaceDoorPath;
+      openDoor3 = beachDoorPath;
+      break;
+    case 2:
+      openDoor2 = botDoorPath;
+      openDoor1 = beachDoorPath;
+      openDoor3 = SpaceDoorPath;
+      break;
+    case 3:
+      openDoor2 = botDoorPath;
+      openDoor1 = SpaceDoorPath;
+      openDoor3 = beachDoorPath;
+      break;
+    case 4:
+      openDoor3 = botDoorPath;
+      openDoor1 = beachDoorPath;
+      openDoor2 = SpaceDoorPath;
+      break;
+    case 5:
+      openDoor3 = botDoorPath;
+      openDoor1 = SpaceDoorPath;
+      openDoor2 = beachDoorPath;
+      break;
+  }
+}
+function gameOver (status) {
+ if (status === 'win') {
+   startButton.innerHTML = 'You win! Play Again?'; 
+   getYourScore();
+ }
+   else {
+     startButton.innerHTML = 'Game over! Play again?';
+     score = 0;
+    currentStreak.innerHTML = score;
+   }
+ currentPlaying = false;
+}
+const getYourScore = () => {
+  score++;
+  currentStreak.innerHTML = score;
+  if (score > highScore) {
+    highScore = score;
+    bestStreak.innerHTML = highScore;
+  }
+}
+
+let playDoor = (door) => {
+  numClosedDoors = numClosedDoors - 1;
+  if(numClosedDoors === 0)
+  {
+    gameOver('win');
+  }
+  else if(isBot(door))
+  {
+   gameOver() ;
+  }
+}
+let isBot = (door) => {
+ if (door.src === botDoorPath){
+ return true;
+ }
+ else false;
+}  
+
+  let isClicked = (door)=> {
+    if (door.src === closedDoorPath) {
+     return false;
+   } 
+   else {
+      return true;
+}
+}
+
+
+
+
+doorImage1.onclick = () => {
+if(!isClicked(doorImage1) && currentPlaying )
+   { doorImage1.src = openDoor1;
+   playDoor(doorImage1);
+   }
+  }
+
+doorImage2.onclick = () => {
+if(!isClicked(doorImage2)&& currentPlaying)
+  { doorImage2.src= openDoor2;
+   playDoor(doorImage2);
+  } 
+}
+
+doorImage3.onclick = () => {
+if(!isClicked(doorImage3) && currentPlaying )
+  { doorImage3.src = openDoor3; 
+  playDoor(doorImage3);
+  }
+}
+
+startButton.onclick = () => {
+  if(!currentPlaying)
+  startRound();
+}
+let startRound = () => {
+  numClosedDoors = 3;
+  doorImage1.src = closedDoorPath;
+  doorImage2.src = closedDoorPath;
+  doorImage3.src = closedDoorPath;
+  startButton.innerHTML = 'Good Luck!';
+  currentPlaying = true;
+  randomChoreDoorGenerator();
+}
+startRound();
+
+
+
+
+
+
+
+
+      </script>
+  </body>
+</html>
